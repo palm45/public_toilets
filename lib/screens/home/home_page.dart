@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
     Toilet(name: 'ห้องน้ำ 2',point: 4.5,distance: 50.0, ),
     Toilet(name: 'ห้องน้ำ 3',point: 3.7,distance: 350.0, ),
     Toilet(name: 'ห้องน้ำ 4',point: 4.0,distance: 220.0, ),
-    Toilet(name: 'ห้องน้ำ 5',point: 4.8,distance: 550.0, ),
+    Toilet(name: 'ห้องน้ำ 5',point: 2.5,distance: 550.0, ),
   ];
 
   Widget _buildItem(BuildContext context, int index){
@@ -61,7 +61,11 @@ class ToiletListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    /*List<Widget> star = [] ;
+    
+    for(var i=0;i<5;i++){
+      star.add(Icon(Icons.star))
+    }*/
     return Card(
       elevation: 5.0,
       child: Padding(
@@ -81,9 +85,12 @@ class ToiletListItem extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      for(var i=0;i<5;i++)
+                      if(toilet.point > 3)
+                        Text('GOOD'),
+                      // collection for ไม่ใช่ for statement
+                      for(var i=0;i<toilet.point.round();i++)
                         Icon(Icons.star),
-                        Text(toilet.point.toString()),
+                      Text(toilet.point.toString()),
                     ],
                   ),
                   Text(toilet.distance.toString())
