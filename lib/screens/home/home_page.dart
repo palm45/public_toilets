@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:public_toilets/models/toilets.dart';
+import 'package:public_toilets/repository/toillet_repository.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,17 +11,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Toilet> toilets = [
-    Toilet(name: 'ห้องน้ำ 1',point: 4.1,distance: 350.0, ),
-    Toilet(name: 'ห้องน้ำ 2',point: 4.5,distance: 50.0, ),
-    Toilet(name: 'ห้องน้ำ 3',point: 3.7,distance: 350.0, ),
-    Toilet(name: 'ห้องน้ำ 4',point: 4.0,distance: 220.0, ),
-    Toilet(name: 'ห้องน้ำ 5',point: 4.8,distance: 550.0, ),
-    Toilet(name: 'ห้องน้ำ 6',point: 2.5,distance: 10.0, ),
-  ];
 
   Widget _buildItem(BuildContext context, int index){
-    Toilet toilet = toilets[index];
+    Toilet toilet = ToiletRepository.toilets[index];
 
     return ToiletListItem(
       toilet: toilet,
@@ -32,9 +25,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(title: Center(child: Text('Public Toilets')),),
       body: ListView.builder(
-        itemCount: toilets.length,
+        itemCount: ToiletRepository.toilets.length,
         itemBuilder: (ctx, i){
-          Toilet toilet = toilets[i];
+          Toilet toilet = ToiletRepository.toilets[i];
           return ToiletListItem(toilet: toilet);
         },
       ),//call back function
@@ -67,6 +60,9 @@ class ToiletListItem extends StatelessWidget {
     for(var i=0;i<5;i++){
       star.add(Icon(Icons.star))
     }*/
+
+
+
     return Card(
       elevation: 5.0,
       child: Padding(
