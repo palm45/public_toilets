@@ -1,7 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:public_toilets/models/toilets.dart';
 import 'package:public_toilets/repository/toillet_repository.dart';
+import 'package:public_toilets/screens/home/toilet_list_item.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,91 +14,93 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  Widget _buildItem(BuildContext context, int index){
-    Toilet toilet = ToiletRepository.toilets[index];
-
-    return ToiletListItem(
-      toilet: toilet,
-    );
-  }
+  final _toiletNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Center(child: Text('Public Toilets')),),
-      body: ListView.builder(
-        itemCount: ToiletRepository.toilets.length,
-        itemBuilder: (ctx, i){
-          Toilet toilet = ToiletRepository.toilets[i];
-          return ToiletListItem(toilet: toilet);
-        },
-      ),//call back function
-
-      /*body: ListView(
+      appBar: AppBar(
+        title: Text('Public Toilets'),
+      ),
+      body: Column(
         children: [
-          ToiletListItem(toilet: Toilet(name: 'ห้องน้ำ 1',point: 1.0,distance: 100.0)),
-          ToiletListItem(toilet: Toilet(name: 'ห้องน้ำ 2',point: 2.0,distance: 200.0)),
-          ToiletListItem(toilet: Toilet(name: 'ห้องน้ำ 3',point: 3.0,distance: 300.0)),
-          ToiletListItem(toilet: Toilet(name: 'ห้องน้ำ 4',point: 4.0,distance: 400.0)),
-          ToiletListItem(toilet: Toilet(name: 'ห้องน้ำ 5',point: 5.0,distance: 500.0)),
-        ],
-      ),*/
-    );
-  }
-}
+          Expanded(
+            child: ListView.builder(
+              itemCount: ToiletRepository.toilets.length,
+              itemBuilder: (ctx, i) {
+                Toilet toilet = ToiletRepository.toilets[i];
 
-class ToiletListItem extends StatelessWidget {
-  final Toilet toilet;
-
-  ToiletListItem({
-    super.key,
-    required this.toilet
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    /*List<Widget> star = [] ;
-    
-    for(var i=0;i<5;i++){
-      star.add(Icon(Icons.star))
-    }*/
-
-
-
-    return Card(
-      elevation: 5.0,
-      child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(Icons.home, size: 30.0,),
-              Expanded(
-                  child: Text(
-                    toilet.name,
-                    style:TextStyle(fontSize: 24.0,color: Colors.red),
-                  )
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Row(
-                    children: [
-                      if(toilet.point > 3)
-                        Text('GOOD'),
-                      // collection for ไม่ใช่ for statement
-                      for(var i=0;i<toilet.point.round();i++)
-                        Icon(Icons.star),
-                      Text(toilet.point.toString()),
-                    ],
-                  ),
-                  Text(toilet.distance.toString())
-                ],
-              ),
-            ],
+                return ToiletListItem(
+                  toilet: toilet,
+                );
+              },
+            ),
           ),
-        ),
+          Container(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                TextField(
+                  controller: _toiletNameController,
+                  decoration: InputDecoration(
+                    hintText: 'ชื่อห้องน้ำ',
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        width: 3,
+                        color: Colors.greenAccent,
+                      ), //<-- SEE HERE
+                    ),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: 'ให้คะแนน',
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              width: 3,
+                              color: Colors.greenAccent,
+                            ), //<-- SEE HERE
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: 'ระยะทาง',
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              width: 3,
+                              color: Colors.greenAccent,
+                            ), //<-- SEE HERE
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        var toiletName = _toiletNameController.text;
+                        var toilet = Toilet(
+                            name: toiletName, point: 5.0, distance: 100.0);
+
+                        setState(() {
+                          ToiletRepository.toilets.add(toilet);
+                        });
+                      },
+                      child: Text('ADD')),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
