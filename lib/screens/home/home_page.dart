@@ -61,29 +61,37 @@ class ToiletListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(Icons.home, size: 30.0,),
-        Expanded(
-            child: Text(
-              toilet.name,
-              style:GoogleFonts.kanit(fontSize: 24.0,color: Colors.red),
-            )
+
+    return Card(
+      elevation: 5.0,
+      child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Icons.home, size: 30.0,),
+              Expanded(
+                  child: Text(
+                    toilet.name,
+                    style:TextStyle(fontSize: 24.0,color: Colors.red),
+                  )
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Row(
+                    children: [
+                      for(var i=0;i<5;i++)
+                        Icon(Icons.star),
+                        Text(toilet.point.toString()),
+                    ],
+                  ),
+                  Text(toilet.distance.toString())
+                ],
+              ),
+            ],
+          ),
         ),
-        Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Icon(Icons.star),
-                Text(toilet.point.toString()),
-              ],
-            ),
-            Text(toilet.distance.toString())
-          ],
-        ),
-      ],
     );
   }
 }
