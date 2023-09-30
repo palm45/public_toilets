@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:public_toilets/models/toilets.dart';
 import 'package:public_toilets/repository/toillet_repository.dart';
 import 'package:public_toilets/screens/home/toilet_list_item.dart';
@@ -15,6 +15,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _toiletNameController = TextEditingController();
+  final _toiletPointController = TextEditingController();
+  final _toiletDistanceController = TextEditingController();
+  double rating = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -55,20 +58,26 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'ให้คะแนน',
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              width: 3,
-                              color: Colors.greenAccent,
-                            ), //<-- SEE HERE
-                          ),
+                      child: RatingBar.builder(
+                        initialRating: rating,
+                        minRating: 0,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
                         ),
+                        onRatingUpdate: (rating) {
+                          this.rating = rating;
+                          print(rating);
+                        },
                       ),
                     ),
                     Expanded(
                       child: TextField(
+                        controller: _toiletDistanceController,
                         decoration: InputDecoration(
                           hintText: 'ระยะทาง',
                           border: OutlineInputBorder(
@@ -87,14 +96,20 @@ class _HomePageState extends State<HomePage> {
                   child: ElevatedButton(
                       onPressed: () {
                         var toiletName = _toiletNameController.text;
+                        var toiletDistance = _toiletDistanceController.text;
                         var toilet = Toilet(
-                            name: toiletName, point: 5.0, distance: 100.0);
-
+                            name: toiletName,
+                            point: rating,
+                            distance: double.parse(toiletDistance),
+                        );
                         setState(() {
                           ToiletRepository.toilets.add(toilet);
                         });
+                        _toiletNameController.clear();
+                        _toiletDistanceController.clear();
                       },
-                      child: Text('ADD')),
+                      child: Text('ADD'),
+                  ),
                 )
               ],
             ),

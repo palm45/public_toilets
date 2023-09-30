@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:public_toilets/models/toilets.dart';
 
 class ToiletListItem extends StatelessWidget {
@@ -36,8 +37,21 @@ class ToiletListItem extends StatelessWidget {
                       Text('GOOD'),
 
                     // collection for, ไม่ใช่ for statement
-                    for (var i = 0; i < toilet.point.floor(); i++)
-                      Icon(Icons.star),
+                    RatingBar.builder(
+                      initialRating: toilet.point,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+                        print(rating);
+
+                      },
+                    ),
 
                     Text(toilet.point.toString())
                   ],
