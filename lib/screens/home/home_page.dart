@@ -15,7 +15,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _toiletNameController = TextEditingController();
-  final _toiletPointController = TextEditingController();
   final _toiletDistanceController = TextEditingController();
   double rating = 0;
 
